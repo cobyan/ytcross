@@ -14,6 +14,9 @@
   }
 }
 
+button[disabled] {
+  background-color: white;
+}
 button.special {
   background-color: white;
   color: #6c6060;

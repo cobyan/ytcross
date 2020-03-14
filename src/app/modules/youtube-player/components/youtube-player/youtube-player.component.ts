@@ -5,6 +5,7 @@ import { YouTubePlayer } from '@angular/youtube-player';
 import { AppStateInterface } from 'src/app/store/state/app.state';
 import { HistoryActionsEnum, PushHistoryItem } from 'src/app/store/actions/history.actions';
 import { faPlay, faPlayCircle, faPause, faVolumeOff } from '@fortawesome/free-solid-svg-icons';
+import { Subject } from 'rxjs';
 @Component({
   selector: 'app-youtube-player',
   templateUrl: `./youtube-player.component.html`,
@@ -33,6 +34,8 @@ export class YoutubePlayerComponent implements OnInit, AfterViewInit, OnChanges 
   };
 
   searchToggle = false;
+
+  ready: Subject<boolean> = new Subject();
 
   constructor(private R2: Renderer2,
               private store: Store<AppStateInterface>) {
@@ -66,11 +69,10 @@ export class YoutubePlayerComponent implements OnInit, AfterViewInit, OnChanges 
 
   ngAfterViewInit(): void {}
 
-  ready(e): void {
-    console.log('ready: ', e);
+  setPlayer(e): void {
     this.player = e.target;
-    this.player.setOption('controls', '1');
-    this.player.playVideo();
+    this.ready.next(true);
+
   }
 
   stateChange(e): void {
@@ -79,6 +81,14 @@ export class YoutubePlayerComponent implements OnInit, AfterViewInit, OnChanges 
 
   showSearchField(): void {
     this.searchToggle = !this.searchToggle;
+  }
+
+  togglePlay() {
+    if (!this.player) {
+      return;
+    }
+
+    this.player.playVideo();
   }
 
   private validateId(v: string): string | null {

@@ -7,12 +7,21 @@
   (ready)="ready($event)"
   (stateChange)="stateChange($event)"></youtube-player>
 </div>
-<div>
-  <button [ngStyle]="{display: !this.searchToggle ? 'inline-block' : 'none'}">CUE</button>
-  <button [ngStyle]="{display: !this.searchToggle ? 'inline-block' : 'none'}">PLAY/PLAUSE</button>
-  <input [ngStyle]="{display: this.searchToggle ? 'inline-block' : 'none'}" id="userVideoId" type="text" value="{{videoId}}" [(formControl)]="userVideoId">
-  <button (click)="showSearchField()">VIDEO ID</button>
-  
-</div>
+<div class="container">
+  <button>
+    <fa-icon [icon]="icons.cue" size="lg"></fa-icon>
+  </button>
+  <button>
+    <fa-icon [icon]="icons.play" size="lg"></fa-icon>
+    <fa-icon [icon]="icons.pause" size="lg"></fa-icon>
+  </button>
 
-    
+  <div class="special-container"
+  [ngClass]="{widen: this.searchToggle}">
+    <button class="special" (click)="showSearchField()">SWITCH</button>
+    <input id="userVideoId" type="text"
+    [(formControl)]="userVideoId"
+    [ngStyle]="{display: this.searchToggle ? 'inline-block' : 'none'}" 
+    placeholder="{{videoId}}">
+  </div>  
+</div>

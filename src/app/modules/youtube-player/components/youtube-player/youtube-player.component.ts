@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { YouTubePlayer } from '@angular/youtube-player';
 import { AppStateInterface } from 'src/app/store/state/app.state';
 import { HistoryActionsEnum, PushHistoryItem } from 'src/app/store/actions/history.actions';
-
+import { faPlay, faPlayCircle, faPause, faVolumeOff } from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'app-youtube-player',
   templateUrl: `./youtube-player.component.html`,
@@ -23,6 +23,14 @@ export class YoutubePlayerComponent implements OnInit, AfterViewInit, OnChanges 
   userVideoId: FormControl = new FormControl('');
 
   player: any;
+
+  icons = {
+    play: faPlay,
+    pause: faPause,
+    cue: faPlayCircle,
+    A: faVolumeOff,
+    B: faVolumeOff,
+  };
 
   searchToggle = false;
 
@@ -57,7 +65,7 @@ export class YoutubePlayerComponent implements OnInit, AfterViewInit, OnChanges 
   }
 
   ngAfterViewInit(): void {
-    this.userVideoId.setValue(this.videoId);
+    //this.userVideoId.setValue(this.videoId);
   }
 
   ready(e): void {

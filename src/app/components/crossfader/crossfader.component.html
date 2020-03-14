@@ -2,9 +2,11 @@
   <div class="side"> <!-- COL SX --></div>
 
 <div>
-  <section>
+  <section style="height: 32px;">
     <div>
-      <button (click)="resetVolume(config.min)">&lt;</button>
+      <button (click)="resetVolume(config.min)">
+        <fa-icon [flip]="'horizontal'" [icon]="icons.left"></fa-icon>
+      </button>
     </div>
     
     <div>
@@ -15,12 +17,17 @@
         min="{{config.min}}" max="{{config.max}}" value="{{center}}">
     </div>
     <div>
-      <button (click)="resetVolume(config.max)">&gt;</button>
+      <button (click)="resetVolume(config.max)">
+        <fa-icon [icon]="icons.right"></fa-icon>
+      </button>
     </div>
   </section>
 
   <div class="controls">
-    <button style="flex-grow: 1;" (click)="resetVolume(center)">X</button>
+    <button class="reset-volume" (click)="resetVolume(center)">
+      <fa-icon [icon]="icons.center" [flip]="'horizontal'" size="lg"></fa-icon>
+      <fa-icon [icon]="icons.center" size="lg"></fa-icon>
+    </button>
   </div>
 </div>
 <div class="side"><!-- COL DX --></div>

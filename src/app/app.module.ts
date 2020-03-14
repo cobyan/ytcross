@@ -12,6 +12,7 @@ import { CrossfaderComponent } from './components/crossfader/crossfader.componen
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { StoreRouterConnectingModule } from '@ngrx/router-store';
     ),
     StoreModule.forRoot(appReducers),
     StoreRouterConnectingModule.forRoot({stateKey: 'router' }),
-    StoreDevtoolsModule.instrument()
+    StoreDevtoolsModule.instrument(),
+    FontAwesomeModule
   ],
   providers: [],
   bootstrap: [AppComponent],

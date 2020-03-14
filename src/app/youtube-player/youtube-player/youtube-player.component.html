@@ -1,0 +1,18 @@
+<div>
+  <youtube-player
+  #player
+  [height]="300"
+  [width]="500"
+  [videoId]="videoId"
+  (ready)="ready($event)"
+  (stateChange)="stateChange($event)"></youtube-player>
+</div>
+<div>
+  <button [ngStyle]="{display: !this.searchToggle ? 'inline-block' : 'none'}">CUE</button>
+  <button [ngStyle]="{display: !this.searchToggle ? 'inline-block' : 'none'}">PLAY/PLAUSE</button>
+  <input [ngStyle]="{display: this.searchToggle ? 'inline-block' : 'none'}" id="userVideoId" type="text" value="{{videoId}}" [(formControl)]="userVideoId">
+  <button (click)="showSearchField()">VIDEO ID</button>
+  
+</div>
+
+    

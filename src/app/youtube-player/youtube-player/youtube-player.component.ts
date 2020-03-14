@@ -1,15 +1,10 @@
 import { FormControl } from '@angular/forms';
-import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewInit, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewInit, OnChanges, Renderer2 } from '@angular/core';
 import { YouTubePlayer } from '@angular/youtube-player';
 
 @Component({
   selector: 'app-youtube-player',
-  template: `<youtube-player
-    #player
-    [videoId]="videoId"
-    (ready)="ready($event)"
-    (stateChange)="stateChange($event)"></youtube-player>
-    <input type="text" value="{{videoId}}" [(formControl)]="userVideoId">`,
+  templateUrl: `./youtube-player.component.html`,
   styleUrls: ['./youtube-player.component.scss']
 })
 export class YoutubePlayerComponent implements OnInit, AfterViewInit, OnChanges {
@@ -19,13 +14,17 @@ export class YoutubePlayerComponent implements OnInit, AfterViewInit, OnChanges 
   @Input() videoId: string;
 
   @ViewChild('player') playerRef: ElementRef<YouTubePlayer>;
+  @ViewChild('searchBtn') searchBtn: ElementRef<HTMLElement>;
+  @ViewChild('searchInput') searchInput: ElementRef<HTMLElement>;
 
   userVideoId: FormControl = new FormControl('');
 
   player: any;
 
+  searchToggle = false;
+
   private validateId(v: string): string | null {
-    const videoUrlContainsId = v.match(/\w{11}/);
+    const videoUrlContainsId = v.match(/[\d\w-]{11}/);
 
     if (videoUrlContainsId
         && videoUrlContainsId[0]
@@ -38,13 +37,13 @@ export class YoutubePlayerComponent implements OnInit, AfterViewInit, OnChanges 
     return null;
   }
 
-  constructor() {
+  constructor(private R2: Renderer2) {
     this.userVideoId.valueChanges.subscribe((v) => {
 
       const validId = this.validateId(v);
 
       if (validId) {
-        console.log('videoId change: ', v);
+        console.log('videoId change: ', validId, v);
         this.videoId = validId;
       } else {
         this.userVideoId.setErrors({invalid: true});
@@ -90,4 +89,7 @@ export class YoutubePlayerComponent implements OnInit, AfterViewInit, OnChanges 
     console.log('stateChange: ', e);
   }
 
+  showSearchField(): void {
+    this.searchToggle = !this.searchToggle;
+  }
 }

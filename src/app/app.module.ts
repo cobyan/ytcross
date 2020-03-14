@@ -1,16 +1,22 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 
+import { YoutubePlayerModule } from './youtube-player/youtube-player.module';
 import { AppComponent } from './app.component';
+import { CrossfaderComponent } from './crossfader/crossfader.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    CrossfaderComponent,
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    YoutubePlayerModule,
+    ReactiveFormsModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

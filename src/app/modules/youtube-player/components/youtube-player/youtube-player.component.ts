@@ -1,6 +1,9 @@
 import { FormControl } from '@angular/forms';
-import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewInit, OnChanges, Renderer2 } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewInit, OnChanges, Renderer2, SimpleChange } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { YouTubePlayer } from '@angular/youtube-player';
+import { AppStateInterface } from 'src/app/store/state/app.state';
+import { HistoryActionsEnum, PushHistoryItem } from 'src/app/store/actions/history.actions';
 
 @Component({
   selector: 'app-youtube-player',
@@ -23,36 +26,15 @@ export class YoutubePlayerComponent implements OnInit, AfterViewInit, OnChanges 
 
   searchToggle = false;
 
-  private validateId(v: string): string | null {
-    const videoUrlContainsId = v.match(/[\d\w-]{11}/);
+  constructor(private R2: Renderer2,
+              private store: Store<AppStateInterface>) {
 
-    if (videoUrlContainsId
-        && videoUrlContainsId[0]
-        && videoUrlContainsId[0].length === 11) {
-
-          return videoUrlContainsId[0];
-
-        }
-
-    return null;
+    this.userVideoId.valueChanges.subscribe(
+      this.changeVideoId
+    );
   }
 
-  constructor(private R2: Renderer2) {
-    this.userVideoId.valueChanges.subscribe((v) => {
-
-      const validId = this.validateId(v);
-
-      if (validId) {
-        console.log('videoId change: ', validId, v);
-        this.videoId = validId;
-      } else {
-        this.userVideoId.setErrors({invalid: true});
-      }
-
-    });
-  }
-
-  ngOnChanges(changes) {
+  ngOnChanges(changes: {volume: SimpleChange}) {
 
     console.log('changes happening', this.player);
     if (!this.player) {
@@ -91,5 +73,33 @@ export class YoutubePlayerComponent implements OnInit, AfterViewInit, OnChanges 
 
   showSearchField(): void {
     this.searchToggle = !this.searchToggle;
+  }
+
+  private validateId(v: string): string | null {
+    const videoUrlContainsId = v.match(/[\d\w-]{11}/);
+
+    if (videoUrlContainsId
+        && videoUrlContainsId[0]
+        && videoUrlContainsId[0].length === 11) {
+
+          return videoUrlContainsId[0];
+
+        }
+
+    return null;
+  }
+
+  private changeVideoId = (v: string) => {
+
+    const validId = this.validateId(v);
+
+    if (validId) {
+      console.log('videoId change: ', validId, v);
+      this.videoId = validId;
+      this.store.dispatch( new PushHistoryItem({time: new Date(), video: validId}));
+    } else {
+      this.userVideoId.setErrors({invalid: true});
+    }
+
   }
 }

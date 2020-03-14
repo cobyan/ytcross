@@ -1,13 +1,13 @@
 import { FormControl } from '@angular/forms';
-import { 
-  Component, 
-  OnInit, 
-  Input, 
-  ViewChild, 
-  ElementRef, 
-  AfterViewInit, 
-  OnChanges, 
-  Renderer2 
+import {
+  Component,
+  OnInit,
+  Input,
+  ViewChild,
+  ElementRef,
+  AfterViewInit,
+  OnChanges,
+  Renderer2
 } from '@angular/core';
 import { YouTubePlayer } from '@angular/youtube-player';
 
@@ -31,20 +31,6 @@ export class YoutubePlayerComponent implements OnInit, AfterViewInit, OnChanges 
   player: any;
 
   searchToggle = false;
-
-  private validateId(v: string): string | null {
-    const videoUrlContainsId = v.match(/[\d\w-]{11}/);
-
-    if (videoUrlContainsId
-        && videoUrlContainsId[0]
-        && videoUrlContainsId[0].length === 11) {
-
-          return videoUrlContainsId[0];
-
-        }
-
-    return null;
-  }
 
   constructor(private R2: Renderer2) {
     this.userVideoId.valueChanges.subscribe((v) => {
@@ -100,5 +86,19 @@ export class YoutubePlayerComponent implements OnInit, AfterViewInit, OnChanges 
 
   showSearchField(): void {
     this.searchToggle = !this.searchToggle;
+  }
+
+  private validateId(v: string): string | null {
+    const videoUrlContainsId = v.match(/[\d\w-]{11}/);
+
+    if (videoUrlContainsId
+        && videoUrlContainsId[0]
+        && videoUrlContainsId[0].length === 11) {
+
+          return videoUrlContainsId[0];
+
+        }
+
+    return null;
   }
 }

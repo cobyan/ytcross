@@ -1,11 +1,12 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-crossfader',
   templateUrl: './crossfader.component.html',
-  styleUrls: ['./crossfader.component.scss']
+  styleUrls: ['./crossfader.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class CrossfaderComponent implements OnInit {
 

@@ -1,14 +1,27 @@
-<div class="controls">
-  <button class="dj" (click)="resetVolume(config.min)">&lt;</button>
-  <div>
-    <label>{{ range.value }}</label>
-    <input type="range"
-      [formControl]="range"
-      title="{{range.value}}"
-      min="{{config.min}}" max="{{config.max}}" value="{{center}}">
+<section>
+  <div class="side"> <!-- COL SX --></div>
+
+<div>
+  <section>
+    <div>
+      <button (click)="resetVolume(config.min)">&lt;</button>
+    </div>
+    
+    <div>
+      <label style="display:none">{{ range.value }}</label>
+      <input style="height:30px" type="range"
+        [formControl]="range"
+        title="{{range.value}}"
+        min="{{config.min}}" max="{{config.max}}" value="{{center}}">
+    </div>
+    <div>
+      <button (click)="resetVolume(config.max)">&gt;</button>
+    </div>
+  </section>
+
+  <div class="controls">
+    <button style="flex-grow: 1;" (click)="resetVolume(center)">X</button>
   </div>
-  <button class="dj" (click)="resetVolume(config.max)">&gt;</button>
 </div>
-<div class="controls">
-  <button class="dj" (click)="resetVolume(center)">X</button>
-</div>
+<div class="side"><!-- COL DX --></div>
+</section>

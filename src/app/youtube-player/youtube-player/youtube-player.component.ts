@@ -24,10 +24,32 @@ export class YoutubePlayerComponent implements OnInit, AfterViewInit, OnChanges 
 
   player: any;
 
+  private validateId(v: string): string | null {
+    const videoUrlContainsId = v.match(/\w{11}/);
+
+    if (videoUrlContainsId
+        && videoUrlContainsId[0]
+        && videoUrlContainsId[0].length === 11) {
+
+          return videoUrlContainsId[0];
+
+        }
+
+    return null;
+  }
+
   constructor() {
     this.userVideoId.valueChanges.subscribe((v) => {
-      console.log('videoId change: ', v);
-      this.videoId = v;
+
+      const validId = this.validateId(v);
+
+      if (validId) {
+        console.log('videoId change: ', v);
+        this.videoId = validId;
+      } else {
+        this.userVideoId.setErrors({invalid: true});
+      }
+
     });
   }
 

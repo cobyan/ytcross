@@ -9,6 +9,15 @@ import { debounceTime } from 'rxjs/operators';
 })
 export class CrossfaderComponent implements OnInit {
 
+  config = {
+    min: -100,
+    max: 100,
+  };
+
+  get center() {
+    return this.config.min + this.config.max;
+  }
+
   range: FormControl = new FormControl(0);
   @Output() volumeChange: EventEmitter<number> = new EventEmitter<number>();
 

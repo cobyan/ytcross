@@ -1,11 +1,14 @@
 <div class="controls">
-  <button class="dj" (click)="resetVolume(-100)">&lt;</button>
+  <button class="dj" (click)="resetVolume(config.min)">&lt;</button>
   <div>
     <label>{{ range.value }}</label>
-    <input type="range" [formControl]="range" min="-100" max="100" value="0">
+    <input type="range"
+      [formControl]="range"
+      title="{{range.value}}"
+      min="{{config.min}}" max="{{config.max}}" value="{{center}}">
   </div>
-  <button class="dj" (click)="resetVolume(100)">&gt;</button>
+  <button class="dj" (click)="resetVolume(config.max)">&gt;</button>
 </div>
 <div class="controls">
-  <button class="dj" (click)="resetVolume(0)">X</button>
+  <button class="dj" (click)="resetVolume(center)">X</button>
 </div>

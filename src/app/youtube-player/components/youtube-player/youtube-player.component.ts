@@ -1,10 +1,16 @@
 import { FormControl } from '@angular/forms';
-import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewInit, OnChanges, Renderer2, SimpleChange } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { 
+  Component, 
+  OnInit, 
+  Input, 
+  ViewChild, 
+  ElementRef, 
+  AfterViewInit, 
+  OnChanges, 
+  Renderer2 
+} from '@angular/core';
 import { YouTubePlayer } from '@angular/youtube-player';
-import { AppStateInterface } from 'src/app/store/state/app.state';
-import { HistoryActionsEnum, PushHistoryItem } from 'src/app/store/actions/history.actions';
-import { faPlay, faPlayCircle, faPause, faVolumeOff } from '@fortawesome/free-solid-svg-icons';
+
 @Component({
   selector: 'app-youtube-player',
   templateUrl: `./youtube-player.component.html`,
@@ -24,25 +30,38 @@ export class YoutubePlayerComponent implements OnInit, AfterViewInit, OnChanges 
 
   player: any;
 
-  icons = {
-    play: faPlay,
-    pause: faPause,
-    cue: faPlayCircle,
-    A: faVolumeOff,
-    B: faVolumeOff,
-  };
-
   searchToggle = false;
 
-  constructor(private R2: Renderer2,
-              private store: Store<AppStateInterface>) {
+  private validateId(v: string): string | null {
+    const videoUrlContainsId = v.match(/[\d\w-]{11}/);
 
-    this.userVideoId.valueChanges.subscribe(
-      this.changeVideoId
-    );
+    if (videoUrlContainsId
+        && videoUrlContainsId[0]
+        && videoUrlContainsId[0].length === 11) {
+
+          return videoUrlContainsId[0];
+
+        }
+
+    return null;
   }
 
-  ngOnChanges(changes: {volume: SimpleChange}) {
+  constructor(private R2: Renderer2) {
+    this.userVideoId.valueChanges.subscribe((v) => {
+
+      const validId = this.validateId(v);
+
+      if (validId) {
+        console.log('videoId change: ', validId, v);
+        this.videoId = validId;
+      } else {
+        this.userVideoId.setErrors({invalid: true});
+      }
+
+    });
+  }
+
+  ngOnChanges(changes) {
 
     console.log('changes happening', this.player);
     if (!this.player) {
@@ -64,7 +83,9 @@ export class YoutubePlayerComponent implements OnInit, AfterViewInit, OnChanges 
     document.body.appendChild(tag);
   }
 
-  ngAfterViewInit(): void {}
+  ngAfterViewInit(): void {
+    this.userVideoId.setValue(this.videoId);
+  }
 
   ready(e): void {
     console.log('ready: ', e);
@@ -79,33 +100,5 @@ export class YoutubePlayerComponent implements OnInit, AfterViewInit, OnChanges 
 
   showSearchField(): void {
     this.searchToggle = !this.searchToggle;
-  }
-
-  private validateId(v: string): string | null {
-    const videoUrlContainsId = v.match(/[\d\w-]{11}/);
-
-    if (videoUrlContainsId
-        && videoUrlContainsId[0]
-        && videoUrlContainsId[0].length === 11) {
-
-          return videoUrlContainsId[0];
-
-        }
-
-    return null;
-  }
-
-  private changeVideoId = (v: string) => {
-
-    const validId = this.validateId(v);
-
-    if (validId) {
-      console.log('videoId change: ', validId, v);
-      this.videoId = validId;
-      this.store.dispatch( new PushHistoryItem({time: new Date(), video: validId}));
-    } else {
-      this.userVideoId.setErrors({invalid: true});
-    }
-
   }
 }

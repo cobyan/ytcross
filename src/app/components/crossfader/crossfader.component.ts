@@ -15,7 +15,7 @@ export class CrossfaderComponent implements OnInit {
     min: -100,
     max: 100,
   };
-  
+
   icons = { center: faVolumeUp, left: faVolumeUp, right: faVolumeUp };
 
   get center() {

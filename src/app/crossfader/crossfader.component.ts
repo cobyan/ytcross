@@ -11,7 +11,7 @@ export class CrossfaderComponent implements OnInit {
 
   range: FormControl = new FormControl(0);
   @Output() volumeChange: EventEmitter<number> = new EventEmitter<number>();
-  
+
   constructor() {
 
     this.range.valueChanges

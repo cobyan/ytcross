@@ -1,3 +1,4 @@
+import { FormControl } from '@angular/forms';
 import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewInit, OnChanges } from '@angular/core';
 import { YouTubePlayer } from '@angular/youtube-player';
 
@@ -7,7 +8,8 @@ import { YouTubePlayer } from '@angular/youtube-player';
     #player
     [videoId]="videoId"
     (ready)="ready($event)"
-    (stateChange)="stateChange($event)"></youtube-player>`,
+    (stateChange)="stateChange($event)"></youtube-player>
+    <input type="text" value="{{videoId}}" [(formControl)]="userVideoId">`,
   styleUrls: ['./youtube-player.component.scss']
 })
 export class YoutubePlayerComponent implements OnInit, AfterViewInit, OnChanges {
@@ -18,9 +20,16 @@ export class YoutubePlayerComponent implements OnInit, AfterViewInit, OnChanges 
 
   @ViewChild('player') playerRef: ElementRef<YouTubePlayer>;
 
+  userVideoId: FormControl = new FormControl('');
+
   player: any;
 
-  constructor() { }
+  constructor() {
+    this.userVideoId.valueChanges.subscribe((v) => {
+      console.log('videoId change: ', v);
+      this.videoId = v;
+    });
+  }
 
   ngOnChanges(changes) {
 
@@ -45,7 +54,7 @@ export class YoutubePlayerComponent implements OnInit, AfterViewInit, OnChanges 
   }
 
   ngAfterViewInit(): void {
-    console.log(this.playerRef);
+    this.userVideoId.setValue(this.videoId);
   }
 
   ready(e): void {
